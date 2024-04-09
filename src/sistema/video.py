@@ -25,3 +25,15 @@ class Video(object):
     def close(self) -> NoneType:
         self.camera.release()
         cv.destroyAllWindows()
+
+
+    def debug(self) -> NoneType:
+        while True:
+            frame = self.serialize()
+            
+            cv.imshow('Debug', frame)
+
+            if cv.waitKey(1) == ord('q'):
+                break
+
+        self.close()
