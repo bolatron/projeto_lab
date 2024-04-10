@@ -2,6 +2,10 @@ import os
 import time
 
 from sistema.video import Video
+from sistema.io import IO
+from sistema.settings import ( DOCS_PATH )
+
+from modulos.gesture_recognition import Recognizer
 
 class CLI(object):
 
@@ -14,7 +18,10 @@ class CLI(object):
         match flag:
             case '--debugging-video':
                 self.debug_video()
-        
+
+            case '--debugging-recognizer':
+                self.debug_recognizer()
+
             case '--help':
                 self.help()
 
@@ -27,6 +34,9 @@ class CLI(object):
         Video().debug()
 
 
+    def debug_recognizer(self):
+        Recognizer().debug()
+
+
     def help(self):
-        with open('docs/HELP.md', 'r') as f:
-            print(f.read(), end='')
+        print(IO.read_as_utf8(DOCS_PATH, 'HELP.md'), end='')

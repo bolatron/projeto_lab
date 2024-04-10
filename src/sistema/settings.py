@@ -15,3 +15,11 @@ if os.path.exists(f'{Path.home()}/.ssh/id_rsa.pub'):
     with open(f'{Path.home()}/.ssh/id_rsa.pub', 'r') as f:
         SSH_PUBKEY = f.read().replace('\n', '')
 # /////////////////////////////////////////////////////////////////////////////
+
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+# ROOT FOLDERS PATH
+
+DOCS_PATH   = os.path.join(BASE_PATH, 'docs')
+MODELS_PATH = os.path.join(BASE_PATH, 'models')
+
+# /////////////////////////////////////////////////////////////////////////////
