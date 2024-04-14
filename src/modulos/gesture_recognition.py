@@ -27,7 +27,7 @@ class Recognizer(object):
 
         self.options        = vision.GestureRecognizerOptions(
                 base_options    = self.base_options
-            #running_mode=VisionRunningMode.VIDEO
+                #running_mode=VisionRunningMode.VIDEO
         )
 
         self.recognizer     = vision.GestureRecognizer.create_from_options(

@@ -10,4 +10,3 @@ if __name__ == '__main__':
         exit(-1)
 
     CLI().handler(argv[1])
-    exit(0)
