@@ -14,15 +14,16 @@ class Sound(object):
         )
 
 
-    def play(self, x=0, y=1.0) -> NoneType:
+    def play(self, x, y) -> NoneType:
         if (y == 0):    return
 
-        self.stream.write(
-            np.sin( 
-                (x % 10) * ( (2 * np.pi) / 10) / y, 
-                dtype=np.float32
-            ).tobytes()
-        )
+        for _ in range(344):
+            self.stream.write(
+                np.sin( 
+                    (x % 5) * ( (2 * np.pi) / 5) / y, 
+                    dtype=np.float32
+                ).tobytes()
+            )
 
 
     def close(self):

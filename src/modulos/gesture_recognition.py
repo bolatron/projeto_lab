@@ -46,17 +46,19 @@ class Recognizer(object):
         )
 
         if len(recognition_result.gestures) == 0:
-            return frame
+            return frame, 0, 0
 
         gesture = recognition_result.gestures[0][0]
         gesture_name = gesture.category_name
         hand_landmarks = recognition_result.hand_landmarks
 
+        test_x = 0
+        test_y = 0.0
+
         for hand_landmark in hand_landmarks:
             hand_landmarks_proto = landmark_pb2.NormalizedLandmarkList()
             hand_landmarks_proto.landmark.extend([
-            landmark_pb2.NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z) for landmark in hand_landmark
-        ])
+            landmark_pb2.NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z) for landmark in hand_landmark])
 
         self.mp_drawing.draw_landmarks(
             frame,
@@ -66,7 +68,7 @@ class Recognizer(object):
             self.mp_drawing_styles.get_default_hand_connections_style()
         )
 
-        return frame
+        return frame, hand_landmarks[0][0].x * 10, hand_landmarks[0][0].y * 100
 
 
     def serialize(self):

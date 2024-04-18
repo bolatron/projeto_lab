@@ -15,14 +15,14 @@ class Image2Sound(object):
         v = Video()
         s = Sound()
         r = Recognizer()
-
+        
+        i=0
         while True:
             frame = v.serialize()
             
-            frame = r.recognize(frame)
+            frame, x, y = r.recognize(frame)
             
-            s.play(x=100, y=20.0)
-        
+            s.play(x=int(x), y=y)
             cv.imshow('Debug', frame)
 
             if cv.waitKey(1) == ord('q'):
