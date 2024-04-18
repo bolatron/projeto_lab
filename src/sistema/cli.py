@@ -6,6 +6,7 @@ from sistema.io import IO
 from sistema.settings import ( DOCS_PATH )
 
 from modulos.gesture_recognition import Recognizer
+from modulos.image_to_sound import Image2Sound
 
 class CLI(object):
 
@@ -22,6 +23,9 @@ class CLI(object):
             case '--debugging-recognizer':
                 self.debug_recognizer()
 
+            case '--debugging-sound':
+                self.debug_sound()
+
             case '--help':
                 self.help()
 
@@ -37,6 +41,10 @@ class CLI(object):
     def debug_recognizer(self):
         Recognizer().debug()
 
+
+    def debug_sound(self):
+        Image2Sound().debug()
+    
 
     def help(self):
         print(IO.read_as_utf8(DOCS_PATH, 'HELP.md'), end='')
