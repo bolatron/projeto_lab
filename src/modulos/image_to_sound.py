@@ -4,6 +4,8 @@ from sistema.video import Video
 
 import numpy as np 
 import cv2 as cv
+import threading
+import time
 
 class Image2Sound(object):
 
@@ -16,13 +18,17 @@ class Image2Sound(object):
         s = Sound()
         r = Recognizer()
         
-        i=0
+        _start = time.time()
         while True:
             frame = v.serialize()
             
-            frame, x, y = r.recognize(frame)
+            frame, x, y, z = r.recognize(frame)
             
-            s.play(x=int(x), y=y)
+            _end = time.time()
+            if _end - _start > 0.4:
+                x = threading.Thread(target=s.play, args=(x, y, z, ))
+                x.start()
+                _start = _end
             cv.imshow('Debug', frame)
 
             if cv.waitKey(1) == ord('q'):

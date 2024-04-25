@@ -26,8 +26,9 @@ class Recognizer(object):
         )
 
         self.options        = vision.GestureRecognizerOptions(
-                base_options    = self.base_options
-                #running_mode=VisionRunningMode.VIDEO
+                base_options    = self.base_options,
+                num_hands       = 1
+                #running_mode    = VisionRunningMode.VIDEO
         )
 
         self.recognizer     = vision.GestureRecognizer.create_from_options(
@@ -46,7 +47,7 @@ class Recognizer(object):
         )
 
         if len(recognition_result.gestures) == 0:
-            return frame, 0, 0
+            return frame, 0, 0, 0
 
         gesture = recognition_result.gestures[0][0]
         gesture_name = gesture.category_name
@@ -60,15 +61,15 @@ class Recognizer(object):
             hand_landmarks_proto.landmark.extend([
             landmark_pb2.NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z) for landmark in hand_landmark])
 
-        self.mp_drawing.draw_landmarks(
-            frame,
-            hand_landmarks_proto,
-            self.mp_hands.HAND_CONNECTIONS,
-            self.mp_drawing_styles.get_default_hand_landmarks_style(),
-            self.mp_drawing_styles.get_default_hand_connections_style()
-        )
+            self.mp_drawing.draw_landmarks(
+                frame,
+                hand_landmarks_proto,
+                self.mp_hands.HAND_CONNECTIONS,
+                self.mp_drawing_styles.get_default_hand_landmarks_style(),
+                self.mp_drawing_styles.get_default_hand_connections_style()
+            )
 
-        return frame, hand_landmarks[0][0].x * 10, hand_landmarks[0][0].y * 100
+        return frame, hand_landmarks[0][8].x * 100, hand_landmarks[0][8].y * 100, hand_landmarks[0][8].z * 10
 
 
     def serialize(self):
@@ -81,7 +82,7 @@ class Recognizer(object):
         while True:
             frame = v.serialize()
             
-            frame = self.recognize(frame)
+            frame, _, _, _ = self.recognize(frame)
 
             cv.imshow('Debug', frame)
 
