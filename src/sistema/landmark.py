@@ -1,17 +1,13 @@
 import os
 import mediapipe as mp
+
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from mediapipe.framework.formats import landmark_pb2
 
 from sistema.settings import ( MODELS_PATH )
-from sistema.video import Video
 
-import numpy as np 
-import cv2 as cv
-
-class Recognizer(object):
-
+class Landmark(object):
 
     def __init__(self):
         VisionRunningMode = mp.tasks.vision.RunningMode
@@ -74,19 +70,3 @@ class Recognizer(object):
 
     def serialize(self):
         pass
-
-
-    def debug(self):
-        v = Video()
-
-        while True:
-            frame = v.serialize()
-            
-            frame, _, _, _ = self.recognize(frame)
-
-            cv.imshow('Debug', frame)
-
-            if cv.waitKey(1) == ord('q'):
-                break
-
-        v.close()

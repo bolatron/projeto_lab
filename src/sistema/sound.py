@@ -21,7 +21,7 @@ class Sound(object):
         self.player = Player()
         self.player.open_stream()
 
-        self.synthesizer = Synthesizer(osc1_waveform=Waveform.sine, osc1_volume=0.1, use_osc2=False)
+        self.synthesizer = Synthesizer(osc1_waveform=Waveform.sawtooth, osc1_volume=0.1, use_osc2=False)
 
     def play(self, x, y, z) -> NoneType:
 

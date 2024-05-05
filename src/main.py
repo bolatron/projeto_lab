@@ -1,6 +1,6 @@
 import sistema.settings
 
-from sistema.cli import CLI
+from entrypoint.cli import CLI
 from sys import argv
 
 if __name__ == '__main__':

@@ -1,8 +1,6 @@
-from types import NoneType
-
-import numpy as np 
 import cv2 as cv 
 
+from types import NoneType
 
 class Video(object):
 
@@ -25,15 +23,3 @@ class Video(object):
     def close(self) -> NoneType:
         self.camera.release()
         cv.destroyAllWindows()
-
-
-    def debug(self) -> NoneType:
-        while True:
-            frame = self.serialize()
-            
-            cv.imshow('Debug', frame)
-
-            if cv.waitKey(1) == ord('q'):
-                break
-
-        self.close()
