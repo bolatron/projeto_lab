@@ -55,8 +55,9 @@ class Debug(object):
         v = Video()
 
         while True:
-            frame = v.serialize()
-            
+            frame = v.serialize() 
+            frame = v.deserialize(frame)
+
             cv.imshow('Debug', frame)
 
             if cv.waitKey(1) == ord('q'):

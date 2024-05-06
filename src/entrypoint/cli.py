@@ -5,6 +5,7 @@ from sistema.io import IO
 from sistema.settings import ( DOCS_PATH )
 
 from modulos.debug import Debug
+from modulos.stream import Stream
 
 class CLI(object):
 
@@ -23,6 +24,12 @@ class CLI(object):
 
             case '--debugging-sound':
                 Debug.debug_sound()
+
+            case '--server':
+                Stream(is_server=True).server()
+
+            case '--client':
+                Stream(is_server=False).client()
 
             case '--help':
                 self.help()
