@@ -28,5 +28,5 @@ MODELS_PATH = os.path.join(BASE_PATH, 'models')
 # SERVER SETTINGS
 
 HOST    = '127.0.0.1'
-PORT    = 65433
+PORT    = 65432
 # /////////////////////////////////////////////////////////////////////////////

@@ -26,39 +26,22 @@ class Stream(object):
 
         streaming_data = b''
 
-        while len(streaming_data) < PAYLOAD_SIZE:
-            packet = conn.recv(1024)
-            if not packet: break
-            streaming_data += packet
-        
-        VIDEO_SHAPE_PAYLOAD = struct.unpack("Q", streaming_data[:PAYLOAD_SIZE])[0]
-        streaming_data = streaming_data[PAYLOAD_SIZE:]
-
-        while len(streaming_data) < VIDEO_SHAPE_PAYLOAD:
-            streaming_data += conn.recv(1024)
-        serialized_video_shape = streaming_data[:VIDEO_SHAPE_PAYLOAD]
-        streaming_data = streaming_data[VIDEO_SHAPE_PAYLOAD:]
-
-        video_shape = int.from_bytes(serialized_video_shape, byteorder='big')
-        video_shape = tuple(video_shape.to_bytes(2, byteorder='big'))
-        v.set_shape(video_shape)
-
         while True:
 
-            # PAYLOAD
             while len(streaming_data) < PAYLOAD_SIZE:
-                packet = conn.recv(1024)
+                packet = conn.recv(4 * 1024)
                 if not packet: break
                 streaming_data += packet
-            
-            # VIDEO DATA
-            VIDEO_PAYLOAD = struct.unpack("Q", streaming_data[:PAYLOAD_SIZE])[0]
-            streaming_data = streaming_data[PAYLOAD_SIZE:]
 
-            while len(streaming_data) < VIDEO_PAYLOAD:
-                streaming_data += conn.recv(1024)
-            serialized_frame = streaming_data[:VIDEO_PAYLOAD]
-            streaming_data = streaming_data[VIDEO_PAYLOAD:]
+            packed_msg_size = streaming_data[:PAYLOAD_SIZE]
+            streaming_data = streaming_data[PAYLOAD_SIZE:]
+            video_msg_size = struct.unpack("Q", packed_msg_size)[0]
+
+            while len(streaming_data) < video_msg_size:
+                streaming_data += conn.recv(4 * 1024)
+            
+            serialized_frame = streaming_data[:video_msg_size]
+            streaming_data = streaming_data[video_msg_size:]
 
             frame = v.deserialize(serialized_frame)
             cv.imshow("Stream", frame)
@@ -73,21 +56,12 @@ class Stream(object):
     def client(self):
         v = Video(is_client=True)
 
-        video_shape = v.get_shape()
-
-        serialized_video_shape = bytes(video_shape)
-        serialized_video_shape = struct.pack("Q", len(serialized_video_shape)) \
-            + serialized_video_shape
-
-        self.socket.sendall(serialized_video_shape)
-
         while(True):
             serialized_frame = v.serialize()
             serialized_frame = struct.pack("Q", len(serialized_frame)) \
                 + serialized_frame
 
             self.socket.sendall(serialized_frame)
-
 
         v.close()
         self.close()
