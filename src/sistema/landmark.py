@@ -79,7 +79,7 @@ class Landmark(object):
         )
 
         if len(recognition_result.gestures) == 0:
-            return frame, None
+            return frame, None, 0
 
         gesture = recognition_result.gestures[0][0]
         gesture_name = gesture.category_name
@@ -108,7 +108,7 @@ class Landmark(object):
                 self.mp_drawing_styles.get_default_hand_connections_style()
             )
 
-        return frame, gesture_name
+        return frame, gesture_name, hand_landmarks[0][8].x
 
 
     def serialize(self):

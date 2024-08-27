@@ -18,7 +18,7 @@ class Debug(object):
             frame = v.serialize()
             frame = v.deserialize(frame)
 
-            frame, _ = l.read_gesture(frame)
+            frame, _, _, _ = l.recognize(frame)
 
             cv.imshow('Debug', frame)
 
@@ -78,9 +78,9 @@ class Debug(object):
             frame = v.serialize()
             frame = v.deserialize(frame)
 
-            frame, gesture_name = l.read_gesture(frame)
+            frame, gesture_name, position_x = l.read_gesture(frame)
 
-            s.check(gesture_name)
+            s.check((gesture_name, position_x))
 
             cv.imshow('Debug', frame)
 

@@ -23,13 +23,15 @@ class State(object):
         self.enter_state = True
         self.can_play_audio = True
         self._start = time.time()
+        self.position_x = 0
 
 
-    def check(self, gesture_name):
+    def check(self, package):
 
-        self.gesture_name = gesture_name
+        self.gesture_name = package[0]
+        self.position_x = package[1]
 
-        print(self.curr_state, self.gesture_name)
+        print(self.position_x)
 
         match self.curr_state:
             case 'normal':
@@ -92,9 +94,9 @@ class State(object):
     def play(self):
         pygame.mixer.init()
         pygame.mixer.music.load(os.path.join(SOUNDS_PATH, 'kick.ogg'))
-        if self.gesture_name == 'Open_Palm':
+        if self.position_x > 0.5:
             pygame.mixer.music.load(os.path.join(SOUNDS_PATH, 'snare.ogg'))
-        if self.gesture_name == 'Thumb_Up':
+        else:
             pygame.mixer.music.load(os.path.join(SOUNDS_PATH, 'kick.ogg'))
         pygame.mixer.music.play()
         pygame.time.delay(1000)
