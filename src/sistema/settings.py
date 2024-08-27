@@ -21,6 +21,7 @@ if os.path.exists(f'{Path.home()}/.ssh/id_rsa.pub'):
 
 DOCS_PATH   = os.path.join(BASE_PATH, 'docs')
 MODELS_PATH = os.path.join(BASE_PATH, 'models')
+SOUNDS_PATH = os.path.join(BASE_PATH, 'sounds')
 
 # /////////////////////////////////////////////////////////////////////////////
 

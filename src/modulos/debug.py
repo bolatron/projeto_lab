@@ -1,6 +1,7 @@
 from sistema.landmark import Landmark
 from sistema.sound import Sound
 from sistema.video import Video
+from sistema.fsm import State 
 
 import numpy as np 
 import cv2 as cv
@@ -10,13 +11,14 @@ import time
 class Debug(object):
 
     def debug_landmark():
-        v = Video()
+        v = Video(is_client=True)
         l = Landmark()
 
         while True:
             frame = v.serialize()
-            
-            frame, _, _, _ = l.recognize(frame)
+            frame = v.deserialize(frame)
+
+            frame, _ = l.read_gesture(frame)
 
             cv.imshow('Debug', frame)
 
@@ -27,21 +29,22 @@ class Debug(object):
 
 
     def debug_sound():
-        v = Video()
+        v = Video(is_client=True)
         s = Sound()
         l = Landmark()
         
         _start = time.time()
         while True:
             frame = v.serialize()
+            frame = v.deserialize(frame)
             
             frame, x, y, z = l.recognize(frame)
             
             _end = time.time()
-            if _end - _start > 0.4:
+            if _end - self._start > 0.4:
                 x = threading.Thread(target=s.play, args=(x, y, z, ))
                 x.start()
-                _start = _end
+                self._start = _end
             cv.imshow('Debug', frame)
 
             if cv.waitKey(1) == ord('q'):
@@ -52,11 +55,32 @@ class Debug(object):
 
 
     def debug_video():
-        v = Video()
+        v = Video(is_client=True)
 
         while True:
             frame = v.serialize() 
             frame = v.deserialize(frame)
+
+            cv.imshow('Debug', frame)
+
+            if cv.waitKey(1) == ord('q'):
+                break
+
+        v.close()
+
+
+    def debug_lab():
+        v = Video(is_client=True)
+        l = Landmark()
+        s = State()
+
+        while True:
+            frame = v.serialize()
+            frame = v.deserialize(frame)
+
+            frame, gesture_name = l.read_gesture(frame)
+
+            s.check(gesture_name)
 
             cv.imshow('Debug', frame)
 

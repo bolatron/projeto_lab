@@ -25,6 +25,9 @@ class CLI(object):
             case '--debugging-sound':
                 Debug.debug_sound()
 
+            case '--debugging-lab':
+                Debug.debug_lab()
+
             case '--server':
                 Stream(is_server=True).server()
 
